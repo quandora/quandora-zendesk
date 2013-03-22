@@ -1,0 +1,30 @@
+{
+  "author": {
+    "name": "Quandora",
+    "email": "contact@quandora.com"
+  },
+
+  "location": "ticket_sidebar",
+  "defaultLocale": "en",
+  "private": false,
+  "singleInstall": true,
+  "frameworkVersion": "0.5",
+  
+  "parameters": [
+    {
+      "name": "domainUrl",
+      "type": "text",
+      "required": true 
+    },
+    {
+      "name": "username",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "required": true 
+    }    
+  ]
+}

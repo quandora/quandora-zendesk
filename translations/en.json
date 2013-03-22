@@ -1,0 +1,19 @@
+{
+  "app": {
+   "description": "Question & Answer software that helps distributed teams share their knowledge in a fun and efficient way. ",
+   "name":        "Quandora",
+   "parameters": {
+     "domainUrl": {"label": "Domain URL"},
+     "username": {"label": "Username", "helpText": "Use a readonly account to access your Knowledge Base"},
+     "password": {"label": "Password"}
+   }
+  },
+
+  "add": {
+    "done":   "Bookmarked ticket #{{id}}",
+    "failed": "Failed to bookmark ticket #{{id}}"
+  },
+
+  "bookmark_this_ticket": "Bookmark This Ticket",
+  "none":                 "No bookmarks"
+}
