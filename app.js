@@ -3,15 +3,18 @@
   return {
     requests: {
       fetchQuestions: function() {
-        var url = this.computeQueryUrl();
+        var postUrl = this.computeQueryUrl();
         var auth = this.computeBasicAuth();
-        var query = this.computeQueryText();
+        var query = this.getMltQueryText();
         return {
-          'url': url,
-          'data': { 'q': query },
-          'type': 'GET',
-          'dataType': 'json',
-          'headers': { 'Authorization': auth }
+          url: postUrl,
+          type: 'POST',
+          dataType: 'JSON',
+          data: {
+            type: "string", 
+            data: query
+          },
+          headers: { 'Authorization': auth }
         };
       }
     },
@@ -45,13 +48,18 @@
     },
 
     computeQueryUrl: function() {
-       var domainUrl = this.getDomainUrl();
-       domainUrl += "/m/json/kb/88b90a69-47a8-49db-bbe8-92dcf5303001/mlt?q=bla+bla+bla";
-       //TODO - remove q param (only for debug)
-       return domainUrl;
+       var url = this.getDomainUrl();
+       var kbase = this.setting("kbase");       
+       if (kbase) {
+          url += "/m/json/kb/"+kbase+"/mlt";
+       } else {
+          url += "/m/json/mlt";
+       }
+       //TODO: append limit if needed: url += "?l=20"
+       return url;
     },
 
-    computeQueryText: function() {      
+    getMltQueryText: function() {
       var text = "";
       var ticket = this.ticket();
 
@@ -69,12 +77,14 @@
       if (tags) {
         text = text + " "+tags.join(" ");
       }
-
       return text.trim();
     },
 
+    computeQueryJsonMessage: function() {      
+      return JSON.stringify({type: "string", data: this.getMltQueryText()});
+    },
+
     requestQuestions: function() {
-      console.log("REQUEST QUESTIONS!!!");
       this.ajax("fetchQuestions");
     },
 

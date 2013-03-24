@@ -4,6 +4,7 @@
    "name":        "Quandora",
    "parameters": {
      "domainUrl": {"label": "Domain URL"},
+     "kbase": {"label": "Knowledge Base Id", "helpText": "You can optionally target a specific Knoweldge Base by specifying its UID. By default the entire domain is searched"},
      "username": {"label": "Username", "helpText": "Use a readonly account to access your Knowledge Base"},
      "password": {"label": "Password"}
    }

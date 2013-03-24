@@ -17,6 +17,11 @@
       "required": true 
     },
     {
+      "name": "kbase",
+      "type": "text",
+      "required": false 
+    },    
+    {
       "name": "username",
       "type": "text",
       "required": true
