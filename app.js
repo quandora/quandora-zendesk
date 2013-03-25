@@ -108,9 +108,31 @@
       var last = url.length - 1;
       if (url.indexOf('/', last) !== -1) { // ends with '/'
         url = url.substring(0, last);
+<<<<<<< HEAD
       }
       return url;
     },
+=======
+    }
+    return url;
+  },
+
+
+  computeBasicAuth: function() {
+    var username = this.setting('username');
+    var password = this.setting('password');
+    return 'Basic ' + Base64.encode(username+':'+password);
+  },
+
+  getMltQueryText: function() {
+    var text = '';
+    var ticket = this.ticket();
+
+    var subject = ticket.subject();
+    if (subject) {
+      text = subject;
+    }
+>>>>>>> f4baaabc16d9c99ecb29e770b1251baf20fdc7af
 
     computeBasicAuth: function() {
       var username = this.setting('username');
