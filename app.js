@@ -115,6 +115,7 @@
     return url;
   },
 
+
   computeBasicAuth: function() {
     var username = this.setting('username');
     var password = this.setting('password');
