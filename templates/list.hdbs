@@ -1,16 +1,31 @@
+<div>
+{{#if quandora.query}}
+<p style="margin-bottom: 0.5em"><a href="#" id="qdr_backToRelatedQuestions">Back to Related Questions</a></p> 
+{{/if}}
+<form id="quandora-search-form" class="form-search">
+<input class="search-query" style="width: 90%" type="text" name="query" value="{{quandora.query}}" placeholder="What are you looking for?">
+</form>
+</div>
 <div id="questions_list">
   {{#each questions}}
   <div class="question">
-    <h3><a id="{{this.uid}}" target="_blank">{{this.title}}</a>
-      [{{this.answers}}, {{this.votes}}]</h3>
-    <p class="summary">
-      {{this.summary}}
-      <span class="author"> 
-        <br><i class="icon-user"></i>
-        <a href="https://app.quandora.com/object/{{this.author.uid}}" target="_blank">
-          {{this.author.firstName}} {{this.author.lastName}} [{{this.author.score}}]</a>
+    <h3>
+      <a id="{{this.uid}}" target="_blank">{{this.title}}</a>
+      <span style='font-size: 8pt; color: gray; margin-left: 1em'>
+        <span title="Answers">{{this.answers}} <i class='icon-share-alt'></i></span> 
+        <span title="Votes">{{this.votes}} <i class='icon-thumbs-up'></i></span>
+        <span title="Views">{{this.views}} <i class='icon-eye-open'></i></span>
       </span>
+    </h3>
+    <p class="summary">
+      {{this.summary}}      
+      <div class="author"> 
+        <br><i class="icon-user"></i>
+        <a href="{{../quandora.appUrl}}/object/{{this.author.uid}}" target="_blank">
+          {{this.author.firstName}} {{this.author.lastName}} [{{this.author.score}}]</a>
+      </div>
     </p>
   </div>
+  <hr>
   {{/each}}
 </div>

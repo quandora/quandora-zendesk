@@ -15,9 +15,9 @@
 {{/each}}
 </ul>
 
-<div class="url_link">Full URL: <blockquote>https://app.quandora.com/object/{{question.uid}}</blockquote></div>
+<div class="url_link">Full URL: <blockquote>{{quandora.appUrl}}/object/{{question.uid}}</blockquote></div>
 
-<div class="nav"><a class="back_to_list" href="#">Back to list</a> | <a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in new tab">Open in Quandora</a></div>
+<div class="nav"><a class="back_to_list" href="#">Back to list</a> | <a href="{{quandora.appUrl}}/object/{{question.uid}}" target="_blank" alt="open in new tab">Open in Quandora</a></div>
 
 
 </div>
