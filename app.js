@@ -62,17 +62,19 @@
     },
 
   handleActivate: function() {
+    console.log("activating quandora!!!!!!!!!!!");
     var qdr_domainUrl = this.domainUrl();
 
     this.quandora = {
       query: null, // current search query if any
       domainUrl: qdr_domainUrl,
       appUrl: this.computeAppUrl(qdr_domainUrl),
+      searchUrl: this.getSearchUrl(qdr_domainUrl),      
+      mltUrl: null, //TODO
       kbase: this.setting("kbase"),
-      auth: this.computeBasicAuth(),
-      searchUrl: this.getSearchUrl(qdr_domainUrl),
-      mltUrl: null //TODOs
+      auth: this.computeBasicAuth()
     };
+
     this.renderRelatedQuestions();
   },
 
@@ -170,14 +172,13 @@
   },
 
   performSearch: function(event) {
-    var query = event.target.elements["query"].value;    
+    var query = event.target.elements.query.value;    
 
+    var questions = [];
     this.quandora.query = query; 
     this.ajax('fetchSearchResult')
     .done(function(response) {      
-      if (!response || response.type !== 'question-search-result') {
-        questions = [];
-      } else {
+      if (response && response.type === 'question-search-result') {
         questions = response.data.result;
       }
       this.renderQuestionList(questions);

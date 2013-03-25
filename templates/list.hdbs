@@ -18,11 +18,15 @@
       </span>
     </h3>
     <p class="summary">
-      {{this.summary}}      
+      {{this.summary}}  
+      <div class="question-footer">
+      <div style="float: right">
+      </div>    
       <div class="author"> 
         <br><i class="icon-user"></i>
         <a href="{{../quandora.appUrl}}/object/{{this.author.uid}}" target="_blank">
           {{this.author.firstName}} {{this.author.lastName}} [{{this.author.score}}]</a>
+      </div>
       </div>
     </p>
   </div>
