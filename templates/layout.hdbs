@@ -1,6 +1,8 @@
+
+
 <header>
   <span class="logo"/>
-  <h3>Quandora</h3>
+  <h2>Quandora</h2>
 </header>
 
 <section data-main />

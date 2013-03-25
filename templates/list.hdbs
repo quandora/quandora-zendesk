@@ -1,18 +1,15 @@
 <div>
   {{#each questions}}
   <div style='clear:both'>
-    <div style='clear:both'>
-      <h3><a href="https://app.quandora.com/object/{{this.uid}}" target="_blank">{{this.title}}</a></h3>
-      <p>{{this.summary}}</p>
-      <p>
-      <div style="color: #bfbfbf; text-align:left">by {{this.author.firstName}} {{this.author.lastName}}</div>
+    <div id="questions_list" style='clear:both'>
+      <h3><a href="https://app.quandora.com/object/{{this.uid}}" target="_blank">{{this.title}}</a> [{{this.answers}}, {{this.answers}}]</h3>
+      <p class="summary">{{this.summary}}
+      <span class="author"> 
+        <br><i class="icon-user"></i>
+        <a href="https://app.quandora.com/object/{{this.author.uid}}" target="_blank">{{this.author.firstName}} {{this.author.lastName}} [{{this.author.score}}]</a>
+      </span>
       </p>
     </div>
-    <!--
-    <div style='float: left'>
-      <img src="http://www.gravatar.com/avatar/{{this.author.gravatar}}?d=mm&s=32">
-    </div>
-    -->
   </div>
   {{/each}}
 </div>
