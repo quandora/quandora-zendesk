@@ -70,9 +70,9 @@
       domainUrl: qdr_domainUrl,
       appUrl: this.computeAppUrl(qdr_domainUrl),
       searchUrl: this.getSearchUrl(qdr_domainUrl),      
-      mltUrl: null, //TODO
+      mltUrl: this.computeMltUrl(),
       kbase: this.setting("kbase"),
-      auth: this.computeBasicAuth()
+      auth: this.computeBasicAuth(qdr_domainUrl)
     };
 
     this.renderRelatedQuestions();
@@ -88,15 +88,15 @@
     return appUrl;
   },
 
-  computeMltUrl: function() {
-    var url = this.domainUrl();
+  computeMltUrl: function(domainUrl) {
+    var url = domainUrl;
     var kbase = this.setting('kbase');
     if (kbase) {
       url += '/m/json/kb/' + kbase + '/mlt';
     } else {
       url += '/m/json/mlt';
     }
-    url += '?l=7';
+    url += '?l=10';
     return url;
   },
 
@@ -106,6 +106,7 @@
 
   domainUrl: function() {
       var url = this.setting('domainUrl');
+    console.log("compute domainUrl .........", url);
       // remove trailing / if any
       var last = url.length - 1;
       if (url.indexOf('/', last) !== -1) { // ends with '/'
@@ -147,7 +148,7 @@
 
   renderQuestion: function(uuid) {
     this.ajax('fetchQuestion', uuid)
-      .done(function(response) {
+      .always(function(response) {
         var question = response.data;
         var domainUrl = this.domainUrl();
         this.switchTo('question', {'question': question, 'quandora': this.quandora});
@@ -161,7 +162,7 @@
   renderRelatedQuestions: function(questions) {
     this.quandora.query = null;
     this.ajax('fetchRelatedQuestions')
-    .done(function(response) {      
+    .always(function(response) {      
       if (!response || response.type !== 'mlt') {
         questions = [];
       } else {
@@ -177,7 +178,7 @@
     var questions = [];
     this.quandora.query = query; 
     this.ajax('fetchSearchResult')
-    .done(function(response) {      
+    .always(function(response) {      
       if (response && response.type === 'question-search-result') {
         questions = response.data.result;
       }
