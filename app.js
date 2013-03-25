@@ -41,6 +41,8 @@
 
     events: {
       'app.activated': 'handleActivate',
+      'ticket.subject.changed':       'loadIfReady',
+      'ticket.description.changed':       'loadIfReady',
 
       'click .back_to_list': 'renderRelatedQuestions',
 
@@ -72,8 +74,17 @@
         auth: this.computeBasicAuth(domainUrl)
       };
 
-      this.renderRelatedQuestions();
-      console.log('Quandora for Zendesk Activated', domainUrl);
+      this.doneLoading = false;
+      this.loadIfReady();
+
+    },
+
+    loadIfReady: function() {
+      if (!this.doneLoading && this.ticket().subject() !== null && this.ticket().description() !== null) {
+        this.doneLoading = true;
+        this.renderRelatedQuestions();
+        console.log('Quandora for Zendesk Activated');
+      }
     },
 
     computeAppUrl: function(domainUrl) {
@@ -108,31 +119,9 @@
       var last = url.length - 1;
       if (url.indexOf('/', last) !== -1) { // ends with '/'
         url = url.substring(0, last);
-<<<<<<< HEAD
       }
       return url;
     },
-=======
-    }
-    return url;
-  },
-
-
-  computeBasicAuth: function() {
-    var username = this.setting('username');
-    var password = this.setting('password');
-    return 'Basic ' + Base64.encode(username+':'+password);
-  },
-
-  getMltQueryText: function() {
-    var text = '';
-    var ticket = this.ticket();
-
-    var subject = ticket.subject();
-    if (subject) {
-      text = subject;
-    }
->>>>>>> f4baaabc16d9c99ecb29e770b1251baf20fdc7af
 
     computeBasicAuth: function() {
       var username = this.setting('username');
