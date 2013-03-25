@@ -3,10 +3,6 @@ p, li {
   line-height: 1.5;
 }
 
-h2 {
-  line-height: 30px;
-}
-
 h3 {
     font-weight: bold;
     line-height: 1.5;
@@ -28,6 +24,14 @@ div.question {
 
 #question_page > h4 {
   margin-top: 0.5em;
+  border-bottom: dotted 1px;
+}
+
+.nav {
+  font-size: 11px;
+  clear: both;
+  text-align: center;
+  margin: 5px;
 }
 
 ul.answers {
@@ -40,11 +44,19 @@ ul.answers > li {
   margin-top: 0.5em;
 }
 
+ul.answers > li > p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
 .url_link {
   font-size: 9px;
   border: dotted 1px lightgray;
 }
 
+/* end question page*/
+
+/* header */
 .logo {
   background-image: app-asset-url("logo-small.png");
   background-color: transparent;
@@ -54,3 +66,20 @@ ul.answers > li {
   height: 25px;
   width: 25px;
 }
+
+h2 {
+  line-height: 25px;
+  vertical-align: baseline;
+}
+
+#quicksearch {
+  width: 140px;
+  height: 21px;
+  float: right;
+  border: solid 1px lightgray;
+  padding: 0;
+  margin: 1px;
+  font-size: 11px;
+}
+
+/* end header */

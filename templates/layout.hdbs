@@ -2,7 +2,8 @@
 
 <header>
   <span class="logo"/>
-  <h2>Quandora Q&amp;A</h2>
+  <input type="search" id="quicksearch" placeholder="type to search">
+  <h2>Quandora</h2>
 </header>
 
 <section data-main />

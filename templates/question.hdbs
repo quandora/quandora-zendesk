@@ -1,7 +1,7 @@
 <div id="question_page">
-<h3><a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in quandora (new tab)">{{question.title}}</a></h3>
+<div class="nav"><a class="back_to_list" href="#">Back to list</a> | <a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in new tab">Open in Quandora</a></div>
 
-<a class="back_to_list" href="#">Back to list</a> | <a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in new tab">Open in Quandora</a>
+<h3><a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in quandora (new tab)">{{question.title}}</a></h3>
 
 <p class="question">{{{question.content}}}</p>
 
@@ -15,8 +15,9 @@
 {{/each}}
 </ul>
 
-<p><a class="back_to_list" href="#">Back to list</a> | <a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in new tab">Open in Quandora</a></p>
-
 <div class="url_link">Full URL: <blockquote>https://app.quandora.com/object/{{question.uid}}</blockquote></div>
+
+<div class="nav"><a class="back_to_list" href="#">Back to list</a> | <a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in new tab">Open in Quandora</a></div>
+
 
 </div>
