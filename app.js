@@ -3,26 +3,24 @@
   return {
     requests: {
       fetchRelatedQuestions: function() {
-        var postUrl = this.computeMltUrl();
-        var auth = this.computeBasicAuth();
+        console.log('Quandora More Like This', this.quandora.mltUrl);
         var query = this.getMltQueryText();
         return {
-          url: postUrl,
+          url: this.quandora.mltUrl,
           type: 'POST',
           dataType: 'JSON',
           data: {
             type: 'string',
             data: query
           },
-          headers: { 'Authorization': auth }
+          headers: { 'Authorization': this.quandora.auth }
         };
       },
 
       fetchSearchResult: function() {
-        console.log("AJAX SEARECH", this.quandora.searchUrl, this.quandora.query);
-        var auth = this.computeBasicAuth();
+        console.log('Quandora Search', this.quandora.searchUrl, this.quandora.query);
         return {
-          url: this.quandora.searchUrl+"?q="+this.quandora.query+"&l="+10,
+          url: this.quandora.searchUrl + '?q=' + this.quandora.query + '&l=' + 7,
           type: 'GET',
           dataType: 'JSON',
           headers: { 'Authorization': this.quandora.auth }
@@ -30,13 +28,12 @@
       },
 
       fetchQuestion: function(uuid) {
-        var auth = this.computeBasicAuth();
-        var queryUrl = this.domainUrl() + '/m/json/q/' + uuid;
+        var queryUrl = this.quandora.domainUrl + '/m/json/q/' + uuid;
         return {
           url: queryUrl,
           type: 'GET',
           dataType: 'JSON',
-          headers: { 'Authorization': auth }
+          headers: { 'Authorization': this.quandora.auth }
         };
       }
 
@@ -49,7 +46,7 @@
 
       'submit #quandora-search-form': 'performSearch',
 
-      'click #qdr_backToRelatedQuestions': function(e) {
+      'click #qdr_backToRelatedQuestions': function() {
         this.renderRelatedQuestions();
       },
 
@@ -61,133 +58,132 @@
 
     },
 
-  handleActivate: function() {
-    console.log("activating quandora!!!!!!!!!!!");
-    var qdr_domainUrl = this.domainUrl();
+    handleActivate: function() {
+      console.log('Activating Quandora for Zendesk');
+      var domainUrl = this.domainUrl();
 
-    this.quandora = {
-      query: null, // current search query if any
-      domainUrl: qdr_domainUrl,
-      appUrl: this.computeAppUrl(qdr_domainUrl),
-      searchUrl: this.getSearchUrl(qdr_domainUrl),      
-      mltUrl: this.computeMltUrl(),
-      kbase: this.setting("kbase"),
-      auth: this.computeBasicAuth(qdr_domainUrl)
-    };
+      this.quandora = {
+        query: null, // current search query if any
+        domainUrl: domainUrl,
+        appUrl: this.computeAppUrl(domainUrl),
+        searchUrl: this.getSearchUrl(domainUrl),
+        mltUrl: this.computeMltUrl(domainUrl),
+        kbase: this.setting('kbase'),
+        auth: this.computeBasicAuth(domainUrl)
+      };
 
-    this.renderRelatedQuestions();
-  },
+      this.renderRelatedQuestions();
+      console.log('Quandora for Zendesk Activated', domainUrl);
+    },
 
-  computeAppUrl: function(domainUrl) {
-    var s = domainUrl.indexOf('://')+3; 
-    var e = domainUrl.indexOf('.');
-    var domainName = domainUrl.substring(s, e);
-    var appUrl = domainUrl.substring(0, s)+"app"+domainUrl.substring(e);
-    console.log("App URL", domainName, appUrl);
+    computeAppUrl: function(domainUrl) {
+      var s = domainUrl.indexOf('://') + 3;
+      var e = domainUrl.indexOf('.');
+      var domainName = domainUrl.substring(s, e);
+      var appUrl = domainUrl.substring(0, s) + 'app' + domainUrl.substring(e);
+      console.log('Quandora App URL', domainName, appUrl);
 
-    return appUrl;
-  },
+      return appUrl;
+    },
 
-  computeMltUrl: function(domainUrl) {
-    var url = domainUrl;
-    var kbase = this.setting('kbase');
-    if (kbase) {
-      url += '/m/json/kb/' + kbase + '/mlt';
-    } else {
-      url += '/m/json/mlt';
-    }
-    url += '?l=10';
-    return url;
-  },
+    computeMltUrl: function(domainUrl) {
+      var url = domainUrl;
+      var kbase = this.setting('kbase');
+      if (kbase) {
+        url += '/m/json/kb/' + kbase + '/mlt';
+      } else {
+        url += '/m/json/mlt';
+      }
+      url += '?l=7';
+      return url;
+    },
 
-  getSearchUrl: function(domainUrl) {
-    return domainUrl+'/m/json/search';
-  },
+    getSearchUrl: function(domainUrl) {
+      return domainUrl + '/m/json/search';
+    },
 
-  domainUrl: function() {
+    domainUrl: function() {
       var url = this.setting('domainUrl');
-    console.log("compute domainUrl .........", url);
       // remove trailing / if any
       var last = url.length - 1;
       if (url.indexOf('/', last) !== -1) { // ends with '/'
         url = url.substring(0, last);
-    }
-    return url;
-  },
+      }
+      return url;
+    },
 
-  computeBasicAuth: function() {
-    var username = this.setting('username');
-    var password = this.setting('password');
-    return 'Basic ' + Base64.encode(username+':'+password);
-  },
+    computeBasicAuth: function() {
+      var username = this.setting('username');
+      var password = this.setting('password');
+      return 'Basic ' + Base64.encode(username + ':' + password);
+    },
 
-  getMltQueryText: function() {
-    var text = '';
-    var ticket = this.ticket();
+    getMltQueryText: function() {
+      var text = '';
+      var ticket = this.ticket();
 
-    var subject = ticket.subject();
-    if (subject) {
-      text = subject;
-    }
+      var subject = ticket.subject();
+      if (subject) {
+        text = subject;
+      }
 
-    var description = ticket.description();
-    if (description) {
-      text = text + ' ' + description;
-    }
+      var description = ticket.description();
+      if (description) {
+        text = text + ' ' + description;
+      }
 
-    var tags = ticket.tags();
-    if (tags) {
-      text = text + ' ' + tags.join(' ');
-    }
-    return text.trim();
-  },
+      var tags = ticket.tags();
+      if (tags) {
+        text = text + ' ' + tags.join(' ');
+      }
+      return text.trim();
+    },
 
-  computeQueryJsonMessage: function() {
-    return JSON.stringify({type: 'string', data: this.getMltQueryText()});
-  },
+    computeQueryJsonMessage: function() {
+      return JSON.stringify({type: 'string', data: this.getMltQueryText()});
+    },
 
-  renderQuestion: function(uuid) {
-    this.ajax('fetchQuestion', uuid)
-      .always(function(response) {
-        var question = response.data;
-        var domainUrl = this.domainUrl();
-        this.switchTo('question', {'question': question, 'quandora': this.quandora});
+    renderQuestion: function(uuid) {
+      this.ajax('fetchQuestion', uuid)
+        .done(function(response) {
+          var question = response.data;
+          this.switchTo('question', {'question': question, 'quandora': this.quandora});
+        });
+    },
+
+    renderQuestionList: function(questions) {
+      this.switchTo('list', {'questions': questions, 'quandora': this.quandora});
+    },
+
+    renderRelatedQuestions: function() {
+      this.quandora.query = null;
+      var questions;
+      this.ajax('fetchRelatedQuestions')
+      .done(function(response) {
+        if (!response || response.type !== 'mlt') {
+          questions = [];
+        } else {
+          questions = response.data.result;
+        }
+        this.renderQuestionList(questions);
       });
-  },
+    },
 
-  renderQuestionList: function(questions) {
-    this.switchTo('list', {'questions': questions, 'quandora': this.quandora});
-  },
+    performSearch: function(event) {
+      var query = event.target.elements.query.value;
 
-  renderRelatedQuestions: function(questions) {
-    this.quandora.query = null;
-    this.ajax('fetchRelatedQuestions')
-    .always(function(response) {      
-      if (!response || response.type !== 'mlt') {
-        questions = [];
-      } else {
-        questions = response.data.result;
-      }
-      this.renderQuestionList(questions);
-    });
-  },
+      var questions = [];
+      this.quandora.query = query;
+      this.ajax('fetchSearchResult')
+      .done(function(response) {
+        if (response && response.type === 'question-search-result') {
+          questions = response.data.result;
+        }
+        this.renderQuestionList(questions);
+      });
+      return false; // do not submit the form!
+    }
 
-  performSearch: function(event) {
-    var query = event.target.elements.query.value;    
-
-    var questions = [];
-    this.quandora.query = query; 
-    this.ajax('fetchSearchResult')
-    .always(function(response) {      
-      if (response && response.type === 'question-search-result') {
-        questions = response.data.result;
-      }
-      this.renderQuestionList(questions);
-    });
-
-    return false; // do not submit the form!
-  }
-
-};
+  };
 
 }());
