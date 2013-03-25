@@ -1,5 +1,21 @@
-h3 {
+h2 {
   line-height: 30px;
+}
+
+/*question title */
+h3 {
+    font-style: bold;
+    font-size: 95%;
+    line-height: 1.25;
+    margin-top: 1em;
+}
+
+p.summary {
+    font-size: 95%;
+}
+
+p > .author {
+    font-size: 95%;
 }
 
 .logo {

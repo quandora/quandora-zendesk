@@ -55,7 +55,7 @@
        } else {
           url += "/m/json/mlt";
        }
-       //TODO: append limit if needed: url += "?l=20"
+       url += "?l=7";
        return url;
     },
 
