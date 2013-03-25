@@ -1,0 +1,22 @@
+<div id="question_page">
+<h3><a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in quandora (new tab)">{{question.title}}</a></h3>
+
+<a class="back_to_list" href="#">Back to list</a> | <a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in new tab">Open in Quandora</a>
+
+<p class="question">{{{question.content}}}</p>
+
+<h4>Answers</h4>
+<ul class="answers">
+{{#each question.answersList}}
+  <li class="answer">
+    <strong><a href="https://app.quandora.com/object/{{author.uid}}" target="_blank">{{author.firstName}} {{author.lastName}}</a></strong> [{{author.score}}]:
+    {{{content}}}
+  </li>
+{{/each}}
+</ul>
+
+<p><a class="back_to_list" href="#">Back to list</a> | <a href="https://app.quandora.com/object/{{question.uid}}" target="_blank" alt="open in new tab">Open in Quandora</a></p>
+
+<div class="url_link">Full URL: <blockquote>https://app.quandora.com/object/{{question.uid}}</blockquote></div>
+
+</div>

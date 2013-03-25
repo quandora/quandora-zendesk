@@ -1,21 +1,48 @@
+p, li {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 h2 {
   line-height: 30px;
 }
 
-/*question title */
 h3 {
-    font-style: bold;
-    font-size: 95%;
-    line-height: 1.25;
-    margin-top: 1em;
+    font-weight: bold;
+    line-height: 1.5;
 }
 
-p.summary {
-    font-size: 95%;
+h4 {
+    font-weight: bold;
+    line-height: 1.5;
 }
 
-p > .author {
-    font-size: 95%;
+div.question {
+  margin-top: 0.7em;
+}
+
+/* Question Page */
+#question_page > p {
+  margin-top: 0.5em;
+}
+
+#question_page > h4 {
+  margin-top: 0.5em;
+}
+
+ul.answers {
+  margin-left: 0;
+}
+
+ul.answers > li {
+  list-style-type: upper-roman;
+  list-style-position: inside;
+  margin-top: 0.5em;
+}
+
+.url_link {
+  font-size: 9px;
+  border: dotted 1px lightgray;
 }
 
 .logo {
@@ -26,8 +53,4 @@ p > .author {
   float: right;
   height: 25px;
   width: 25px;
-}
-
-li + li {
-  margin-top: 0.4em;
 }
