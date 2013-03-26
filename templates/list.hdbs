@@ -1,9 +1,16 @@
 {{#if quandora.query}}
-<div class="nav"><a href="#" id="qdr_backToRelatedQuestions">Back to Related Questions</a></div> 
-{{else}}
-<p><em>Related questions from Quandora...</em></p>
+  <div class="nav"><a href="#" id="qdr_backToRelatedQuestions">Back to Related Questions</a></div> 
 {{/if}}
+
+
 <div id="questions_list">
+  {{#if questions}}
+    <p><em>Related questions from Quandora...</em></p>
+  {{else}}
+    <p>No related questions found in Quandora. You can search using the field above or
+      <a href="{{quandora.domainUrl}}">Ask one now</a></p>
+  {{/if}}
+
   {{#each questions}}
   <div class="question">
     <h3><a id="{{this.uid}}" target="_blank">{{this.title}}</a></h3>
@@ -20,8 +27,4 @@
   </div>
   <hr>
   {{/each}}
-  {{#if questions}}
-  {{else}}
-  <p>No related questions found in Quandora. You can search using the field above or <a href="{{quandora.domainUrl}}">Ask one now</a></p>
-  {{/if}}
 </div>
