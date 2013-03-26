@@ -13,7 +13,7 @@ h4 {
     line-height: 1.5;
 }
 
-div.question {
+.question {
   margin-top: 0.7em;
 }
 
@@ -57,6 +57,12 @@ ul.answers > li > p {
 /* end question page*/
 
 /* header */
+
+header {
+  border-bottom: none;
+  margin-bottom: 12px;
+}
+
 .logo {
   background-image: app-asset-url("logo-small.png");
   background-color: transparent;
@@ -70,9 +76,10 @@ ul.answers > li > p {
 h2 {
   line-height: 25px;
   vertical-align: baseline;
+  border-bottom: 1px dotted #CCCCCC;
 }
 
-/* - Remove it?
+/* quicksearch in the title bar 
 #quicksearch {
   width: 140px;
   height: 21px;
@@ -81,15 +88,23 @@ h2 {
   padding: 0;
   margin: 1px;
   font-size: 11px;
-}
-*/
+}*/
 
-.author {
-  margin-top: 0.2em
+#quicksearch {
+  clear: both;
+  width: 90%;
+  border: 1px solid lightgray;
+  margin-top: 0.5em;
+  height: 12px;
 }
 
 .question-footer {
-  clear: both;
+  margin-top: 0.3em;
 }
+
+.question-footer > span {
+  margin-right: 0.75em;
+}
+
 
 /* end header */

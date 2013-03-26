@@ -1,35 +1,27 @@
-<div>
 {{#if quandora.query}}
-<p style="margin-bottom: 0.5em"><a href="#" id="qdr_backToRelatedQuestions">Back to Related Questions</a></p> 
+<div class="nav"><a href="#" id="qdr_backToRelatedQuestions">Back to Related Questions</a></div> 
+{{else}}
+<p><em>Related questions from Quandora...</em></p>
 {{/if}}
-<form id="quandora-search-form" class="form-search">
-<input class="search-query" style="width: 90%" type="text" name="query" value="{{quandora.query}}" placeholder="What are you looking for?">
-</form>
-</div>
 <div id="questions_list">
   {{#each questions}}
   <div class="question">
-    <h3>
-      <a id="{{this.uid}}" target="_blank">{{this.title}}</a>
-      <span style='font-size: 8pt; color: gray; margin-left: 1em'>
-        <span title="Answers">{{this.answers}} <i class='icon-share-alt'></i></span> 
-        <span title="Votes">{{this.votes}} <i class='icon-thumbs-up'></i></span>
-        <span title="Views">{{this.views}} <i class='icon-eye-open'></i></span>
-      </span>
-    </h3>
-    <p class="summary">
-      {{this.summary}}  
-      <div class="question-footer">
-      <div style="float: right">
-      </div>    
-      <div class="author"> 
-        <br><i class="icon-user"></i>
+    <h3><a id="{{this.uid}}" target="_blank">{{this.title}}</a></h3>
+    <p class="summary">{{this.summary}}</p> 
+    <div class="question-footer" style='clear: both; color: gray;'>
+      <span title="Answers"><i class='icon-share-alt'></i> {{this.answers}}</span>
+      <span title="Votes"> <i class='icon-thumbs-up'></i> {{this.votes}}</span>
+      <span title="Views"><i class='icon-eye-open'></i> {{this.views}}</span>
+      <span class="author"><i class="icon-user"></i>
         <a href="{{../quandora.appUrl}}/object/{{this.author.uid}}" target="_blank">
-          {{this.author.firstName}} {{this.author.lastName}} [{{this.author.score}}]</a>
-      </div>
-      </div>
-    </p>
+        {{this.author.firstName}} {{this.author.lastName}}</a>
+    </span>
+    </div>
   </div>
   <hr>
   {{/each}}
+  {{#if questions}}
+  {{else}}
+  <p>No related questions found in Quandora. You can search using the field above or <a href="{{quandora.domainUrl}}">Ask one now</a></p>
+  {{/if}}
 </div>

@@ -42,8 +42,8 @@
 
     events: {
       'app.activated': 'handleActivate',
-      'ticket.subject.changed':       'loadIfReady',
-      'ticket.description.changed':       'loadIfReady',
+      'ticket.subject.changed': 'loadIfReady',
+      'ticket.description.changed': 'loadIfReady',
 
       'click .back_to_list': 'renderRelatedQuestions',
 
@@ -81,12 +81,11 @@
     },
 
     loadIfReady: function() {
-      //console.log(">>>> loadIfReady");
       var ticket = this.ticket();
       if (!this.doneLoading && ticket && ticket.subject()) {
         this.doneLoading = true;
         this.renderRelatedQuestions();
-        //console.log('Quandora for Zendesk Activated');
+        console.log('Quandora for Zendesk Activated');
       }
     },
 
@@ -95,8 +94,7 @@
       var e = domainUrl.indexOf('.');
       var domainName = domainUrl.substring(s, e);
       var appUrl = domainUrl.substring(0, s) + 'app' + domainUrl.substring(e);
-      //console.log('Quandora App URL', domainName, appUrl);
-
+      console.log('Quandora App URL', domainName, appUrl);
       return appUrl;
     },
 
