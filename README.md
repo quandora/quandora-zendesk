@@ -9,6 +9,7 @@ This app for Zendesk allows enables agent to leverage Quandora's content without
 
 ##About Quandora
 
-Quandora is [Question & Answer Software][quandora] for technical teams enabling knowledge sharing in a fun and efficient way. Think StackOverflow, for your team and your knowledge: live documentation, build from real-world experience. Quandora integrates with many other services like Google Apps, Zendesk, Yammer, HipChat, Campfire and many others!
+Quandora is [Question & Answer Software][quandora] for technical teams enabling knowledge sharing in a fun and efficient way. Think StackOverflow, for your team and your knowledge: living documentation, build from real-world experience, focusing on your team specific know-how.
+Quandora integrates with many other services like Google Apps, Zendesk, Yammer, HipChat, Campfire and many others!
 
 [quandora]: http://www.quandora.com
