@@ -4,7 +4,6 @@
     requests: {
 
       fetchRelatedQuestions: function() {
-        //console.log('Quandora More Like This', this.quandora.mltUrl);
         var query = this.getMltQueryText();
         return {
           url: this.quandora.mltUrl,
@@ -19,7 +18,6 @@
       },
 
       fetchSearchResult: function() {
-        //console.log('Quandora Search', this.quandora.searchUrl, this.quandora.query);
         return {
           url: this.quandora.searchUrl + '?q=' + this.quandora.query + '&l=' + 7,
           type: 'GET',
@@ -62,7 +60,6 @@
     },
 
     handleActivate: function() {
-      //console.log('Activating Quandora for Zendesk');
       var domainUrl = this.domainUrl();
 
       this.quandora = {
@@ -85,7 +82,6 @@
       if (!this.doneLoading && ticket && ticket.subject()) {
         this.doneLoading = true;
         this.renderRelatedQuestions();
-        console.log('Quandora for Zendesk Activated');
       }
     },
 
@@ -94,7 +90,6 @@
       var e = domainUrl.indexOf('.');
       var domainName = domainUrl.substring(s, e);
       var appUrl = domainUrl.substring(0, s) + 'app' + domainUrl.substring(e);
-      console.log('Quandora App URL', domainName, appUrl);
       return appUrl;
     },
 
