@@ -47,9 +47,7 @@
 
       'submit #quandora-search-form': 'performSearch',
 
-      'click #qdr_backToRelatedQuestions': function() {
-        this.renderRelatedQuestions();
-      },
+      'click #qdr_backToRelatedQuestions': 'renderRelatedQuestions',
 
       //fetch question and display it
       'click .question': function(e) {
