@@ -96,8 +96,8 @@
     computeBasicAuth: function() {
       var username = this.setting('username');
       var password = this.setting('password');
-      var auth = Base64.encode(username + ':' + password);
-      return 'Basic ' + auth;
+      var auth = helpers.fmt('%@:%@', username, password);
+      return helpers.fmt('Basic %@', Base64.encode(auth));
     },
 
     /**
@@ -108,7 +108,8 @@
       var s = domainUrl.indexOf('://') + 3;
       var e = domainUrl.indexOf('.');
       var domainName = domainUrl.substring(s, e);
-      var appUrl = domainUrl.substring(0, s) + 'app' + domainUrl.substring(e);
+      // replace client domain with 'app'
+      var appUrl = helpers.fmt('%@app%@', domainUrl.substring(0, s), domainUrl.substring(e));
       return appUrl;
     },
 
@@ -118,23 +119,23 @@
     },
 
     computeDomainMltUrl: function(domainUrl) {
-        return domainUrl + '/m/json/mlt?l=7';
+        return helpers.fmt('%@/m/json/mlt?l=%@', domainUrl, 7);
     },
 
     computeBaseMltUrl: function(domainUrl, kbase) {
-        return domainUrl + '/m/json/kb/' + kbase + '/mlt?l=7';
+        return helpers.fmt('%@/m/json/kb/%@/mlt?l=%@', domainUrl, kbase, 7);
     },
 
     computeSearchUrl: function(domainUrl) {
-      return domainUrl + '/m/json/search';
+      return helpers.fmt('%@/m/json/search', domainUrl);
     },
 
     getSearchUrl: function(query) {
-      return this.quandora.searchUrl + '?q=' + query + '&l=' + 7;
+      return helpers.fmt('%@?q=%@&l=%@', this.quandora.searchUrl, query, 7);
     },
 
     getQuestionUrl: function(uuid) {
-        return this.quandora.domainUrl + '/m/json/q/' + uuid;
+        return helpers.fmt('%@/m/json/q/%@', this.quandora.domainUrl, uuid);
     },
 
     getMltQueryText: function() {
