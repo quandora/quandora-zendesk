@@ -79,17 +79,6 @@ h2 {
   border-bottom: 1px dotted #CCCCCC;
 }
 
-/* quicksearch in the title bar 
-#quicksearch {
-  width: 140px;
-  height: 21px;
-  float: right;
-  border: solid 1px lightgray;
-  padding: 0;
-  margin: 1px;
-  font-size: 11px;
-}*/
-
 #quicksearch {
   clear: both;
   width: 90%;

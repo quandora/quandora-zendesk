@@ -1,6 +1,6 @@
 <header>
     <span class="logo"/>
-    <h2>Quandora</h2>
+    <h2>Quandora - OK</h2>
     <form id="quandora-search-form" class="form-search">
     <input id="quicksearch" class="search-query" type="search" name="query" results=5
     value="{{quandora.query}}" placeholder="Type and press Enter to search in Quandora">

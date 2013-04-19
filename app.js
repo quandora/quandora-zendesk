@@ -4,6 +4,7 @@
     requests: {
 
       fetchRelatedQuestions: function() {
+        this.quandora.query = null;
         var query = this.getMltQueryText();
         return {
           url: this.quandora.mltUrl,
@@ -17,9 +18,10 @@
         };
       },
 
-      fetchSearchResult: function() {
+      fetchSearchResult: function(query) {
+        this.quandora.query = query;
         return {
-          url: this.quandora.searchUrl + '?q=' + this.quandora.query + '&l=' + 7,
+          url: this.getSearchUrl(query),
           type: 'GET',
           dataType: 'JSON',
           headers: { 'Authorization': this.quandora.auth }
@@ -27,9 +29,8 @@
       },
 
       fetchQuestion: function(uuid) {
-        var queryUrl = this.quandora.domainUrl + '/m/json/q/' + uuid;
         return {
-          url: queryUrl,
+          url: this.getQuestionUrl(uuid),
           type: 'GET',
           dataType: 'JSON',
           headers: { 'Authorization': this.quandora.auth }
@@ -42,19 +43,19 @@
       'app.activated': 'handleActivate',
       'ticket.subject.changed': 'loadIfReady',
       'ticket.description.changed': 'loadIfReady',
+      'click .back_to_list': 'backToList',
+      'submit #quandora-search-form': 'submitSearchQuery',
+      'click #qdr_backToRelatedQuestions': 'openRelatedQuestions',
+      'click .question-link': 'openQuestion',
 
-      'click .back_to_list': 'renderRelatedQuestions',
+      'fetchQuestion.done': 'renderQuestion',
+      'fetchQuestion.fail': 'renderFailure',
 
-      'submit #quandora-search-form': 'performSearch',
+      'fetchSearchResult.done': 'renderSearchResult',
+      'fetchSearchResult.fail': 'renderFailure',
 
-      'click #qdr_backToRelatedQuestions': 'renderRelatedQuestions',
-
-      //fetch question and display it
-      'click .question': function(e) {
-        var uuid = e.target.id;
-        this.renderQuestion(uuid);
-      }
-
+      'fetchRelatedQuestions.done': 'renderRelatedQuestions',
+      'fetchRelatedQuestions.fail': 'renderFailure'
     },
 
     handleActivate: function() {
@@ -64,7 +65,7 @@
         query: null, // current search query if any
         domainUrl: domainUrl,
         appUrl: this.computeAppUrl(domainUrl),
-        searchUrl: this.getSearchUrl(domainUrl),
+        searchUrl: this.computeSearchUrl(domainUrl),
         mltUrl: this.computeMltUrl(domainUrl),
         kbase: this.setting('kbase'),
         auth: this.computeBasicAuth(domainUrl)
@@ -72,39 +73,14 @@
 
       this.doneLoading = false;
       this.loadIfReady();
-
     },
 
     loadIfReady: function() {
       var ticket = this.ticket();
       if (!this.doneLoading && ticket && ticket.subject()) {
         this.doneLoading = true;
-        this.renderRelatedQuestions();
+        this.openRelatedQuestions();
       }
-    },
-
-    computeAppUrl: function(domainUrl) {
-      var s = domainUrl.indexOf('://') + 3;
-      var e = domainUrl.indexOf('.');
-      var domainName = domainUrl.substring(s, e);
-      var appUrl = domainUrl.substring(0, s) + 'app' + domainUrl.substring(e);
-      return appUrl;
-    },
-
-    computeMltUrl: function(domainUrl) {
-      var url = domainUrl;
-      var kbase = this.setting('kbase');
-      if (kbase) {
-        url += '/m/json/kb/' + kbase + '/mlt';
-      } else {
-        url += '/m/json/mlt';
-      }
-      url += '?l=7';
-      return url;
-    },
-
-    getSearchUrl: function(domainUrl) {
-      return domainUrl + '/m/json/search';
     },
 
     domainUrl: function() {
@@ -120,7 +96,45 @@
     computeBasicAuth: function() {
       var username = this.setting('username');
       var password = this.setting('password');
-      return 'Basic ' + Base64.encode(username + ':' + password);
+      var auth = Base64.encode(username + ':' + password);
+      return 'Basic ' + auth;
+    },
+
+    /**
+     * Compute the normalized app URL. Parse an URL of the form:
+     * https://{client}.quandora.com or http://{client}.dev.quandora.com and replace {client} with 'app'.
+     */
+    computeAppUrl: function(domainUrl) {
+      var s = domainUrl.indexOf('://') + 3;
+      var e = domainUrl.indexOf('.');
+      var domainName = domainUrl.substring(s, e);
+      var appUrl = domainUrl.substring(0, s) + 'app' + domainUrl.substring(e);
+      return appUrl;
+    },
+
+    computeMltUrl: function(domainUrl) {
+      var kbase = this.setting('kbase');
+      return kbase ? this.computeBaseMltUrl(domainUrl, kbase) : this.computeDomainMltUrl(domainUrl);
+    },
+
+    computeDomainMltUrl: function(domainUrl) {
+        return domainUrl + '/m/json/mlt?l=7';
+    },
+
+    computeBaseMltUrl: function(domainUrl, kbase) {
+        return domainUrl + '/m/json/kb/' + kbase + '/mlt?l=7';
+    },
+
+    computeSearchUrl: function(domainUrl) {
+      return domainUrl + '/m/json/search';
+    },
+
+    getSearchUrl: function(query) {
+      return this.quandora.searchUrl + '?q=' + query + '&l=' + 7;
+    },
+
+    getQuestionUrl: function(uuid) {
+        return this.quandora.domainUrl + '/m/json/q/' + uuid;
     },
 
     getMltQueryText: function() {
@@ -148,45 +162,68 @@
       return JSON.stringify({type: 'string', data: this.getMltQueryText()});
     },
 
-    renderQuestion: function(uuid) {
-      this.ajax('fetchQuestion', uuid)
-        .done(function(response) {
-          var question = response.data;
-          this.switchTo('question', {'question': question, 'quandora': this.quandora});
-        });
+    /* ---- Failure rendering -- */
+
+    renderFailure: function(response, a, b) {
+        this.switchTo('error', { 'response': response, 'quandora': this.quandora });
     },
+
+    /* ----  Question rendering ---- */
+
+    renderQuestion: function(response) {
+        var question = response.data;
+        this.switchTo('question', { 'question': question, 'quandora': this.quandora });
+    },
+
+    openQuestion: function(e) {
+        var uuid = e.target.id;
+        this.ajax('fetchQuestion', uuid);
+    },
+
+    /* ----  Question List rendering ---- */
 
     renderQuestionList: function(questions) {
       this.switchTo('list', {'questions': questions, 'quandora': this.quandora});
     },
 
-    renderRelatedQuestions: function() {
-      this.quandora.query = null;
-      var questions;
-      this.ajax('fetchRelatedQuestions')
-      .done(function(response) {
-        if (!response || response.type !== 'mlt') {
-          questions = [];
-        } else {
-          questions = response.data.result;
-        }
-        this.renderQuestionList(questions);
-      });
+    backToList: function() {
+      if (this.quandora.query) {
+          // if the query is defined go back to search
+          this.ajax('fetchSearchResult', this.quandora.query);
+      } else {
+          // otherwise go back to related questions
+          this.openRelatedQuestions();
+      }
     },
 
-    performSearch: function(event) {
-      var query = event.target.elements.query.value;
+    openRelatedQuestions: function() {
+      this.ajax('fetchRelatedQuestions');
+    },
 
-      var questions = [];
-      this.quandora.query = query;
-      this.ajax('fetchSearchResult')
-      .done(function(response) {
-        if (response && response.type === 'question-search-result') {
-          questions = response.data.result;
-        }
-        this.renderQuestionList(questions);
-      });
+    renderRelatedQuestions: function(response) {
+      // remove the stored query if any
+      this.quandora.query = null;
+      var questions;
+      if (!response || response.type !== 'mlt') {
+        questions = [];
+      } else {
+        questions = response.data.result;
+      }
+      // render question list
+      this.renderQuestionList(questions);
+    },
+
+    submitSearchQuery: function(event) {
+      this.ajax('fetchSearchResult', event.target.elements.query.value);
       return false; // do not submit the form!
+    },
+
+    renderSearchResult: function(response) {
+      var questions = [];
+      if (response && response.type === 'question-search-result') {
+        questions = response.data.result;
+      }
+      this.renderQuestionList(questions);
     }
 
   };

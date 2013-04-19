@@ -5,15 +5,23 @@
 
 <div id="questions_list">
   {{#if questions}}
-    <p><em>Related questions from Quandora...</em></p>
+    {{#if quandora.query}}
+      <p><em>Questions matching "{{quandora.query}}"</em></p>
+    {{else}}
+      <p><em>Related questions from Quandora...</em></p>
+    {{/if}}
   {{else}}
-    <p>No related questions found in Quandora. You can search using the field above or
+    {{#if quandora.query}}
+      <p>No questions found...</p>
+    {{else}}
+      <p>No related questions found in Quandora. You can search using the field above or
       <a href="{{quandora.domainUrl}}">Ask one now</a></p>
+    {{/if}}
   {{/if}}
 
   {{#each questions}}
   <div class="question">
-    <h3><a id="{{this.uid}}" target="_blank">{{this.title}}</a></h3>
+    <h3><a id="{{this.uid}}" class="question-link" target="_blank">{{this.title}}</a></h3>
     <p class="summary">{{this.summary}}</p> 
     <div class="question-footer" style='clear: both; color: gray;'>
       <span title="Answers"><i class='icon-share-alt'></i> {{this.answers}}</span>

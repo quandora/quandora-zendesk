@@ -1,0 +1,30 @@
+<div id="quandora_error_page">
+<div class="nav"><a class="back_to_list" href="#">Back to list</a></div>
+
+<h3>An error occurred</h3> 
+
+<br>
+
+<div>
+An error occurred whle trying to fetch data from Quandora.</p>
+</div>
+
+<br>
+
+<div>
+Check the settings you specified to connect to Quandora (including the username and the password).
+</div>
+
+<br>
+
+<div>
+Your Quandora domain is located at <a href='{{quandora.domainUrl}}'>{{quandora.domainUrl}}</a>.
+</div>
+
+<br>
+
+<div>
+If the problem persist, please contact our <a href='mailto:contact@quandora.com'>team</a>
+</div>
+
+</div>
